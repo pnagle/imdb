@@ -16,9 +16,9 @@ from rest_framework.response import Response
 
 class MoviesViewSet(viewsets.ViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows users to be viewed or edited movies.
     """
-    queryset = Movies.objects.all().order_by('-popularity')
+    # queryset = Movies.objects.all().order_by('-popularity')
     serializer_class = MoviesSerializers
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -29,9 +29,17 @@ class movies_list(mixins.ListModelMixin,
     """
     List all Movies
     """
-    queryset = Movies.objects.all()
+    # queryset = Movies.objects.all()
     serializer_class = MoviesSerializers
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        queryset = Movies.objects.all()
+        name = self.request.query_params.get('name', None)
+        print name
+        if name is not None:
+            queryset = queryset.filter(name=name).order_by('-popularity')
+        return queryset
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -47,8 +55,16 @@ class movies_detail(mixins.RetrieveModelMixin,
     """
     Retrieve, update or delete a movie.
     """
-    queryset = Movies.objects.all()
+    # queryset = Movies.objects.all()
     serializer_class = MoviesSerializers
+
+    def get_queryset(self):
+        queryset = Movies.objects.all()
+        name = self.request.query_params.get('name', None)
+        print name
+        if name is not None:
+            queryset = queryset.filter(movies__name=name).order_by('-popularity')
+        return queryset
 
     def get(self,request,*args,**kwargs):
         return self.retrieve(request,*args,**kwargs)
