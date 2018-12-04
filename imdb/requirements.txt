@@ -6,3 +6,4 @@ Pygments==2.3.0
 pytz==2018.7
 SQLAlchemy==1.2.14
 gunicorn
+whitenoise==3.3.1

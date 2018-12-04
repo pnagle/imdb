@@ -16,9 +16,15 @@ class Movies(models.Model):
     def __unicode__(self):
         return '%s' % (self.name)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Genre(models.Model):
     genre_name = models.CharField(max_length=128)
 
     def __unicode__(self):
         return '%s' % self.genre_name
+
+    def __str__(self):
+        return str(self.genre_name)
