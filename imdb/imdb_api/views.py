@@ -34,11 +34,11 @@ class movies_list(mixins.ListModelMixin,
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        queryset = Movies.objects.all()
+        orderby = self.request.query_params.get('orderby', None)
+        queryset = Movies.objects.all().order_by('-'+orderby+'')
         name = self.request.query_params.get('name', None)
-        print name
         if name is not None:
-            queryset = queryset.filter(name=name).order_by('-popularity')
+            queryset = queryset.filter(name=name)
         return queryset
 
     def get(self, request, *args, **kwargs):
@@ -61,7 +61,6 @@ class movies_detail(mixins.RetrieveModelMixin,
     def get_queryset(self):
         queryset = Movies.objects.all()
         name = self.request.query_params.get('name', None)
-        print name
         if name is not None:
             queryset = queryset.filter(movies__name=name).order_by('-popularity')
         return queryset

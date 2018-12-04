@@ -1,16 +1,26 @@
 import os, json
 # from models import  Movies, Genre
+import sqlite3
+from array import *
 
 
 def populate():
-    print 'here'
+    print ('here')
+    connection = sqlite3.connect('/home/piyush/Experiments/FyndAssignment/imdb/db.sqlite3')
     with open('/home/piyush/Experiments/FyndAssignment/imdb.json') as imdb_file:
-        data = json.load(imdb_file)
-        i = 0
-        print len(data[2]['name'])
-        for i in range(0, len(data)):
-            print(data[i])
-            # Movies.objects.get_or_create(name=data[i][name], title=title, url=url, views=views)[0]
+        with connection:
+            cursor = connection.cursor()
+            data = json.load(imdb_file)
+            i = 0
+            # print len(data[2]['name'])
+            for i in range(0, len(data)):
+                print(data[0])
+                print ('''INSERT INTO imdb_api_movies VALUES''' +
+                    str(tuple(list(data[i]['name']))))
+                cursor.execute(
+                    '''INSERT INTO imdb_api_movies VALUES''' +
+                    str(tuple(data[i]['name'] + data[i]['director'])))
+                # Movies.objects.get_or_create(name=data[i][name], title=title, url=url, views=views)[0]
 #     # python_cat = add_cat('Python')
 #     #
 #     # add_page(cat=python_cat,
