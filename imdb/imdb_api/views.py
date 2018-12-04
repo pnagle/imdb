@@ -35,7 +35,10 @@ class movies_list(mixins.ListModelMixin,
 
     def get_queryset(self):
         orderby = self.request.query_params.get('orderby', None)
-        queryset = Movies.objects.all().order_by('-'+orderby+'')
+        if orderby:
+            queryset = Movies.objects.all().order_by('-'+orderby+'')
+        else:
+            queryset = Movies.objects.all()
         name = self.request.query_params.get('name', None)
         if name is not None:
             queryset = queryset.filter(name=name)
